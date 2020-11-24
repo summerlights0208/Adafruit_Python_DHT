@@ -19,13 +19,17 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
 import sys
+import RPi.GPIO as GPIO
 import http.client as http
 import urllib
 import json
 import time
 import Adafruit_DHT
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 deviceId = 'DNVEDCFZ'
 deviceKey = '489vJVLK2yn4fXfD' 
 
@@ -79,11 +83,32 @@ else:
     sys.exit(1)
 while(1):
 	h0,t0 = Adafruit_DHT.read_retry(sensor,pin)
+	SwitchStatus = GPIO.input(24)
 	if h0 is not None and t0 is not None:
 		print('Temp={0:0.1f}* Humidity={1:0.1f}%'.format(t0,h0))
-		payload = {"datapoints":[{"dataChnId":"Humidity","values":{"value":h0}},{"dataChnId":"Temperature","values":{"value":t0}}]} 
+		payload = {"datapoints":[{"dataChnId":"Humidity","values":{"value":h0}},{"dataChnId":"Temperature","values":{"value":t0}},{"dataChnId":"SwitchStatus","values":{"value":SwitchStatus}}]} 
 		post_to_mcs(payload)
 		time.sleep(10)
+		if( SwitchStatus == 0):
+		print('Button pressed')
+		else:
+		print('Button released')
 	else:
 		print('Failed to get reading. Try again!')
 		sys.exit(1)
+
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
