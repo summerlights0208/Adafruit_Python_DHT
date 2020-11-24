@@ -90,9 +90,9 @@ while(1):
 		post_to_mcs(payload)
 		time.sleep(10)
 		if( SwitchStatus == 0):
-		print('Button pressed')
+			print('Button pressed')
 		else:
-		print('Button released')
+			print('Button released')
 	else:
 		print('Failed to get reading. Try again!')
 		sys.exit(1)
